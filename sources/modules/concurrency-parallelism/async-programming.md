@@ -24,8 +24,8 @@ Advanced          --- Add external libraries as a dependencies
 _Why is this important?_
 _Why do we want to learn/teach this topic?_
 
-* Asynchronous programming allows for non-blocking functions launches and enables that functions are executed asynchronoulsy.
-* Asynchronous programming is one form of parallism and concurrency included in the C++ standard
+* Asynchronous programming allows for non-blocking functions launches and enables that functions are executed asynchronously.
+* Asynchronous programming is one form of parallelism and concurrency included in the C++ standard
 
 ### Topic introduction
 
@@ -81,14 +81,14 @@ A student should be able to:
 
 #### Caveats
 
-The concept of asyncrhonous programming is no easy digestiable for most students.
+The concept of asynchronous programming is no easy digestible for most students.
 
 
 #### Points to cover
 
 * The header `<future>` needs to be includes
 * The return type of the function or lambda will the the template type of the future
-* The first argument of `std::async` is the function or lambda and after that all arguments are providesd
+* The first argument of `std::async` is the function or lambda and after that all arguments are provided
 
 Example using a function
 ```
