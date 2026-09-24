@@ -32,9 +32,9 @@ _Why do we want to learn/teach this topic?_
 _Very brief introduction to the topic._
 
 Algorithms that range over a large data set, can be accelerated by parallel execution. 
-Exectution policies allow to executed the algorithms in the C++ standard on multiple cores or a single core. 
+Execution policies allow to executed the algorithms in the C++ standard on multiple cores or a single core. 
 
-### Foundational: Knowledge about build systems
+### Foundational: Knowledge about parallel execution
 
 #### Background/Required Knowledge
 
@@ -52,8 +52,8 @@ _Max 5 items._
 
 A student should be able to:
 
-1. To explain parallel and sequential execution
-2. Specify the appropriate execution policy for sequntial or parallel execution 
+1. Explain the difference between parallel and sequential execution
+2. Explain race conditions in parallel execution
 
 #### Caveats
 
@@ -67,11 +67,11 @@ implementation-defined, unspecified, or undefined behavior._
 
 _This section lists important details for each point._
 
-* Add execution policies as an additonal argument to the algorithm  
 * The C++ 17 standard is required
+* There is an optional first argument make it parallel. The default is serial execution
 * Mention `std::atomic` or `std::mutex` to avoid race conditions
 
-### Main: 
+### Main: Knowledge about parallel algorithms
 
 #### Background/Required Knowledge
 
@@ -83,17 +83,18 @@ A student should be able to:
 
 1. Do define a function or lambda for the compute kernel 
 2. Split the work in independent tasks to avoid race conditions
-3. Explain the meaning of the four policies (`std::execution::seq`, `std::execution::par`, `std::execution::par_unseq`, and `std::execution::unseq`) 
+3. Explain the semantics of the four execution policies (`std::execution::seq`, `std::execution::par`, `std::execution::par_unseq`, and `std::execution::unseq`) 
+4. Specify the appropriate execution policy for sequential or parallel execution 
 
 #### Caveats
 
-The concept of parallel programming introduces bugs introdcues via race conditions
-
+* The concept of parallel programming introduces bugs via race conditions
+* If the implementation cannot parallelize or vectorize (e.g. due to lack of resources), all standard execution policies can fall back to sequential execution. 
 
 #### Points to cover
 
 * The header `<execution>` needs to be included
-* The first argument of the algorithm is the execution policy
+* If the implementation cannot parallelize or vectorize (e.g. due to lack of resources), all standard execution policies can fall back to sequential execution. 
 
 Example using a function
 ```
@@ -133,8 +134,8 @@ std::sort(std::exeuction::par,values.begin(),values.end())
 _These are important topics that are not expected to be covered but provide
 guidance where one can continue to investigate this topic in more depth._
 
-* If the implementation cannot parallelize or vectorize (e.g. due to lack of resources), all standard execution policies can fall back to sequential execution. 
+Parallelism is depending on the hardware and runtime. Therefore, we make the following remarks:
 * None of the execution policies allow for reproducibilty. This is obvious for the parallel execution policies. But even `std::ececution::seq` can execute the iterations in any order.
-* Nvidia supports to run `std::execution::par` on Nvidia GPUs. However, that is not yet in the C++ standard and will only work with Nvidia's HPC compiler.
+* NVIDIA supports to run `std::execution::par` on NVIDIA GPUs. However, that is not yet in the C++ standard and will only work with NVIDIA's HPC compiler.
 * Currently, parallel algorithms are implemented using Intel's TBB library in GCC. You can set the number of used cores using `tbb::global_control(tbb::global_control::max_allowed_parallelism, nthreads);` provided by the header `#include "tbb/tbb.h"`.
 
