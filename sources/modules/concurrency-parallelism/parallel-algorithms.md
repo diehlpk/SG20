@@ -32,7 +32,7 @@ _Why do we want to learn/teach this topic?_
 _Very brief introduction to the topic._
 
 Algorithms that range over a large data set, can be accelerated by parallel execution. 
-Execution policies allow to executed the algorithms in the C++ standard on multiple cores or a single core. 
+Execution policies allow execution of the algorithms in the C++ standard on multiple cores or a single core. 
 
 ### Foundational: Knowledge about parallel execution
 
