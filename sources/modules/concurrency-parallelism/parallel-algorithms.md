@@ -60,7 +60,7 @@ A student should be able to:
 _This section mentions subtle points to understand, like anything resulting in
 implementation-defined, unspecified, or undefined behavior._
 
-1. The programmer has to make sure that the algorithm is theoretical parallel. For example, specifying parallel execution using state-full lambdas might give wrong results.
+1. The programmer has to make sure that the algorithm is theoretically parallel. For example, specifying parallel execution using stateful lambdas might give wrong results.
 2. The programmer has to make sure that the parallel execution does not lead to race conditions. 
 
 #### Points to cover
