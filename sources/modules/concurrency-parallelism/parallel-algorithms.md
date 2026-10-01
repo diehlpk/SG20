@@ -75,7 +75,6 @@ _This section lists important details for each point._
 
 #### Background/Required Knowledge
 
-* All of the above.
 
 #### Student outcomes
 
