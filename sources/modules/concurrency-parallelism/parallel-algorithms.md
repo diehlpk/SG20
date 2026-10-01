@@ -68,7 +68,7 @@ implementation-defined, unspecified, or undefined behavior._
 _This section lists important details for each point._
 
 * The C++ 17 standard is required
-* There is an optional first argument make it parallel. The default is serial execution
+* There is an optional first argument to make it parallel. The default is serial execution
 * Mention `std::atomic` or `std::mutex` to avoid race conditions
 
 ### Main: Knowledge about parallel algorithms
