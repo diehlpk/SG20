@@ -135,6 +135,6 @@ guidance where one can continue to investigate this topic in more depth._
 
 Parallelism is depending on the hardware and runtime. Therefore, we make the following remarks:
 * None of the execution policies allow for reproducibilty. This is obvious for the parallel execution policies. But even `std::ececution::seq` can execute the iterations in any order.
-* NVIDIA supports to run `std::execution::par` on NVIDIA GPUs. However, that is not yet in the C++ standard and will only work with NVIDIA's HPC compiler.
+* NVIDIA supports to run `std::execution::par` on NVIDIA GPUs and will only work with NVIDIA's HPC compiler.
 * Currently, parallel algorithms are implemented using Intel's TBB library in GCC. You can set the number of used cores using `tbb::global_control(tbb::global_control::max_allowed_parallelism, nthreads);` provided by the header `#include "tbb/tbb.h"`.
 
