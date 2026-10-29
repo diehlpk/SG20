@@ -1,124 +1,177 @@
-## Module name: Asynchronous programming
+## # Module name: Asynchronous programming
 
-_Skeleton descriptions are typeset in italic text,_
-_so please don't remove these descriptions when editing the topic._
+*Skeleton descriptions are typeset in italic text,*
+*so please don't remove these descriptions when editing the topic.*
 
 ### Overview
 
-_Provides a short natural language abstract of the module’s contents._
-_Specifies the different levels of teaching._
+*Provides a short natural language abstract of the module’s contents.*
+*Specifies the different levels of teaching.*
 
-------------------------------------------------------------------------
-Level             Objective
------------------ ------------------------------------------------------
-Foundational      --- Knowledge about build systems
+Asynchronous programming allows computational tasks to execute independently of the calling code, potentially enabling concurrent execution and improving responsiveness. C++ provides standard library facilities such as `std::async`, `std::future`, and `std::promise` to launch tasks, communicate results, and synchronize execution.
 
-Main              --- Usage of build system to compile a executable
+This module introduces the fundamental concepts of asynchronous programming and demonstrates how to launch functions and lambdas asynchronously and retrieve their results.
 
-Advanced          --- Add external libraries as a dependencies  
-
-------------------------------------------------------------------------
+| Level | Objective |
+|---|---|
+| Foundational | Understand asynchronous programming, futures, and promises. |
+| Main | Launch functions and lambdas asynchronously and retrieve their results. |
+| Advanced | Understand synchronization, exception handling, and more advanced asynchronous programming techniques. |
 
 ### Motivation
 
-_Why is this important?_
-_Why do we want to learn/teach this topic?_
+*Why is this important?*
+*Why do we want to learn/teach this topic?*
 
-* Asynchronous programming allows for non-blocking functions launches and enables that functions are executed asynchronously.
-* Asynchronous programming is one form of parallelism and concurrency included in the C++ standard
+- Asynchronous programming allows tasks to be launched without requiring the calling code to wait immediately for their completion.
+- Asynchronous programming enables concurrency and potentially parallel execution, which can improve application responsiveness and resource utilization.
+- The C++ standard library provides mechanisms for asynchronous task execution, result retrieval, and synchronization.
 
 ### Topic introduction
 
-_Very brief introduction to the topic._
+*Very brief introduction to the topic.*
 
-Build systems are used to configure, build, and install complex C++ projects. 
+Asynchronous programming allows a function or lambda to be launched while the calling code continues executing other operations. The result of an asynchronous computation can be retrieved later when it becomes available.
 
+C++ provides `std::async` to launch tasks and `std::future` to access their results. A future represents a value that may not yet be available. Calling `get()` retrieves the result, waiting for the computation to complete if necessary.
 
-### Foundational: Knowledge about build systems
-
-#### Background/Required Knowledge
-
-A student: 
-* Should know [lambdas](../functions/lambdas.md)
-
-#### Student outcomes
-
-_A list of things "a student should be able to" after the curriculum._
-_The next word should be an action word and testable in an exam._
-_Max 5 items._
-
-A student should be able to:
-
-1. To explain what asynchronous programming is
-2. To explain what a futures and promise are
-
-#### Caveats
-
-_This section mentions subtle points to understand, like anything resulting in
-implementation-defined, unspecified, or undefined behavior._
-
-None
-
-#### Points to cover
-
-_This section lists important details for each point._
-
-* Mention how to launch a function or lambda asynchronously using `std::async`  
-* Mention how to use a `std::future` as a place holder for the result
-
-### Main: Launch functions asynchronous and obtain the results
+### Foundational: Understanding asynchronous programming
 
 #### Background/Required Knowledge
 
-* All of the above.
+A student:
+
+- Should understand functions and their return values.
+- Should know [lambdas](../functions/lambdas.md).
+
+#### Student outcomes
+
+*A list of things "a student should be able to" after the curriculum.*
+*The next word should be an action word and testable in an exam.*
+*Max 5 items.*
+
+A student should be able to:
+
+1. Explain the concept of asynchronous programming.
+2. Distinguish between synchronous and asynchronous execution.
+3. Explain the purpose of futures and promises.
+4. Identify the roles of `std::async` and `std::future` in asynchronous programming.
+
+#### Caveats
+
+*This section mentions subtle points to understand, like anything resulting in implementation-defined, unspecified, or undefined behavior.*
+
+- Asynchronous execution does not necessarily imply parallel execution.
+- Retrieving a result from a future may block until the computation completes.
+- The default execution policy of `std::async` does not guarantee that a task executes asynchronously.
+
+#### Points to cover
+
+*This section lists important details for each point.*
+
+- Introduce synchronous and asynchronous execution.
+- Explain how `std::async` launches functions or lambdas.
+- Introduce `std::future` as a placeholder for a result that becomes available later.
+- Explain the distinction between `std::future` and `std::promise`.
+- Introduce the concept of waiting for an asynchronous computation to complete.
+
+### Main: Launching asynchronous functions and retrieving results
+
+#### Background/Required Knowledge
+
+- All of the above.
 
 #### Student outcomes
 
 A student should be able to:
 
-1. Do define a function or lambda for the computational task
-2. Launch the function or lambda asynchronous and obtain the results
+1. Define a function or lambda representing a computational task.
+2. Launch a function or lambda asynchronously using `std::async`.
+3. Retrieve the result of an asynchronous computation using `std::future::get()`.
+4. Launch multiple independent asynchronous tasks and combine their results.
+5. Explain the differences between the `std::launch::async` and `std::launch::deferred` execution policies.
 
 #### Caveats
 
-The concept of asynchronous programming is no easy digestible for most students.
-
+- `std::future::get()` blocks until the result is available and can be called only once for a given future.
+- `std::async` may execute tasks immediately or defer their execution, depending on the selected launch policy.
+- Using `std::launch::async` explicitly ensures asynchronous execution.
+- Asynchronous tasks accessing shared mutable data require appropriate synchronization to avoid data races.
+- Destruction of a future returned by `std::async` may block until the asynchronous task finishes.
 
 #### Points to cover
 
-* The header `<future>` needs to be includes
-* The return type of the function or lambda will the the template type of the future
-* The first argument of `std::async` is the function or lambda and after that all arguments are provided
+- Include the `<future>` header to use `std::async` and `std::future`.
+- Explain how to launch functions and lambdas using `std::async`.
+- Explain how `std::launch::async` requests asynchronous execution.
+- Explain that the return type of the function or lambda determines the template argument of `std::future`.
+- Explain that `std::async` accepts a callable followed by its arguments, optionally preceded by an execution policy.
+- Explain how to retrieve a result using `get()` and why this operation may block.
+- Demonstrate how multiple asynchronous tasks can execute independently before their results are combined.
 
-Example using a function
-```
-void print_square(double a)
+**Example using a function**
+
+```cpp
+#include <future>
+#include <iostream>
+
+double square(double a)
 {
- std::cout << "Result=" << a * a << std::endl;
+    return a * a;
 }
 
-std::future<void> f = std::async(print,5.0);
-// We could do other work here
-f.get()
+int main()
+{
+    std::future<double> f =
+        std::async(std::launch::async, square, 5.0);
+
+    // Perform other work while square is computed.
+
+    std::cout << "Result = " << f.get() << '\n';
+}
 ```
 
-Example using lambdas
+**Example using lambdas**
+
+```cpp
+#include <future>
+#include <iostream>
+
+int main()
+{
+    // Compute the sum asynchronously.
+    std::future<double> f1 = std::async(
+        std::launch::async,
+        [](double a, double b) { return a + b; },
+        2.0, 3.0
+    );
+
+    // Compute the square asynchronously.
+    std::future<double> f2 = std::async(
+        std::launch::async,
+        [](double a) { return a * a; },
+        4.0
+    );
+
+    // Perform other work while tasks execute.
+
+    // Retrieve and combine the results.
+    double res = f1.get() + f2.get();
+
+    std::cout << "Result = " << res << '\n';
+}
 ```
-// Compute the sum
-std::future<double> f1 = std::async([](double a, double b){ return a + b;});
-// Compute the square
-std::future<double> f2 = std::async([](double a){ return a * a;});
 
-// Gather the results and add them up
-double res = f1.get() + f2.get();
-```
+### Advanced: Managing asynchronous execution
 
-### Advanced
+*These are important topics that are not expected to be covered but provide*
+*guidance where one can continue to investigate this topic in more depth.*
 
-_These are important topics that are not expected to be covered but provide
-guidance where one can continue to investigate this topic in more depth._
+#### Topics for further study
 
-* How to build libraries 
-* How to have external libraries be downloaded during the build process
-* Mention that build systems provide support for unit testing
-
+- **Execution policies:** Compare `std::launch::async` and `std::launch::deferred` and their implications for execution.
+- **Futures and promises:** Use `std::promise` to communicate results between threads and `std::shared_future` to allow multiple consumers to access a result.
+- **Synchronization:** Explore `std::future::wait()`, `wait_for()`, and `wait_until()`.
+- **Exception handling:** Understand how exceptions thrown during asynchronous execution are propagated through `std::future::get()`.
+- **Thread safety:** Investigate data races, shared state, and synchronization mechanisms.
+- **Task composition:** Explore techniques for coordinating dependent asynchronous computations and alternatives such as coroutines and task-based runtimes.
